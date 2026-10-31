@@ -79,5 +79,18 @@ ADMIN_PASSCODE="your_secret_passcode"
 
 ---
 
+## 🌐 Deploy to Netlify (with GitHub)
+
+This repository is ready for 1-click Netlify deployment:
+1. Push this project to your GitHub account.
+2. In [app.netlify.com](https://app.netlify.com), click **Add new site** → **Import an existing project** → **GitHub**.
+3. Select your repository. The included `netlify.toml` automatically configures the build (`npm run build`), publish directory (`dist`), and serverless functions (`netlify/functions`).
+4. Click **Deploy Site**.
+
+See [`DEPLOYMENT_NETLIFY.md`](./DEPLOYMENT_NETLIFY.md) for full instructions.
+
+---
+
 ## 📄 License
 Apache-2.0
+

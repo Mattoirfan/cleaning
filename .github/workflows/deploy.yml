@@ -1,12 +1,16 @@
-name: Deploy to Hostinger
+name: Build & Verify for Netlify
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build-and-deploy:
+  build:
+    name: 🏗️ Build & Test Application
     runs-on: ubuntu-latest
 
     steps:
@@ -22,16 +26,23 @@ jobs:
       - name: 📦 Install Dependencies
         run: npm ci
 
-      - name: 🏗️ Build Production Bundle
+      - name: 🔍 Typecheck & Lint
+        run: npm run lint
+
+      - name: 🚀 Build Production Bundle for Netlify
         run: npm run build
 
-      - name: 🚀 Deploy to Hostinger via FTP / SFTP
-        # Uses SamKirkland/FTP-Deploy-Action to sync dist/ into public_html
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      # If you set NETLIFY_AUTH_TOKEN and NETLIFY_SITE_ID in GitHub Secrets,
+      # this step will automatically deploy the site via Netlify CLI.
+      # (If you connected GitHub directly in app.netlify.com, Netlify deploys automatically!)
+      - name: 🌐 Deploy to Netlify (Optional via Secrets)
+        if: ${{ env.NETLIFY_AUTH_TOKEN != '' && env.NETLIFY_SITE_ID != '' }}
+        uses: nwtgck/actions-netlify@v3.0
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./dist/
-          server-dir: ./public_html/
-          dangerous-clean-slate: false
+          publish-dir: './dist'
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions: ${{ github.sha }}"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

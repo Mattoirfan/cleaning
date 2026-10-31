@@ -1,0 +1,36 @@
+# Netlify Configuration for PureNest Cleaning Co.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+# API Redirects for Netlify Serverless Functions
+[[redirects]]
+  from = "/api/enquiries"
+  to = "/.netlify/functions/enquiries"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/auth"
+  to = "/.netlify/functions/admin-auth"
+  status = 200
+
+# Client-Side SPA Route Fallback (React Router / Page Routing)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Global HTTP Security & Caching Headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
