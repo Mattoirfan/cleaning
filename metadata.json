@@ -1,0 +1,6 @@
+{
+  "name": "PureNest Cleaning Co.",
+  "description": "Premium residential and commercial cleaning services. Trusted, eco-conscious, spotless spaces tailored to your lifestyle and business.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
